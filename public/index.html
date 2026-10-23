@@ -1,0 +1,2183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop AI | Jai Shree Mahakal Garments</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f5f9;
+      color: #172033;
+    }
+
+    header {
+      background: #172554;
+      color: white;
+      padding: 24px;
+    }
+
+    header h1 { margin: 0 0 8px; }
+    header p { margin: 0; color: #cbd5e1; }
+
+    main {
+      max-width: 1200px;
+      margin: 25px auto;
+      padding: 0 16px;
+    }
+
+    .panel {
+      background: white;
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 22px;
+      box-shadow: 0 3px 12px #1720330d;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 16px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      font: inherit;
+    }
+
+    input[type="file"] {
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    button {
+      background: #172554;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 12px;
+    }
+
+    button:hover { background: #243b75; }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    .muted {
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .message {
+      font-weight: bold;
+      overflow-wrap: anywhere;
+    }
+
+    .preview {
+      display: none;
+      margin-top: 12px;
+      max-width: 180px;
+      max-height: 200px;
+      object-fit: contain;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 5px;
+    }
+
+    .summary {
+      background: #f8fafc;
+      padding: 14px;
+      border-radius: 8px;
+      margin: 18px 0;
+    }
+
+    .summary p { margin: 6px 0; }
+
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 900px;
+    }
+
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      padding: 12px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th { background: #f8fafc; }
+
+    .product-photo {
+      width: 65px;
+      height: 75px;
+      object-fit: contain;
+      border-radius: 6px;
+      background: #f8fafc;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 24px;
+      color: #64748b;
+    }
+
+    @media (max-width: 500px) {
+      header { padding: 20px 16px; }
+      .panel { padding: 15px; }
+    }
+
+
+    :root { --navy:#101b3f; --navy-2:#172554; --blue:#3659d9; --ink:#172033; --muted:#64748b; --line:#e5eaf2; --canvas:#f5f7fb; --white:#fff; }
+    body { background:var(--canvas); color:var(--ink); font-family:Inter,Segoe UI,Arial,sans-serif; }
+    .app-shell { min-height:100vh; display:grid; grid-template-columns:250px minmax(0,1fr); }
+    .sidebar { background:linear-gradient(180deg,#111c42,#172554); color:#fff; padding:24px 14px; display:flex; flex-direction:column; gap:24px; }
+    .brand { display:flex; gap:11px; align-items:center; padding:0 10px 18px; border-bottom:1px solid #ffffff24; }
+    .brand-mark { width:42px;height:42px;border-radius:13px;background:#ffffff16;display:grid;place-items:center;font-weight:800;font-size:17px;letter-spacing:-1px;border:1px solid #ffffff25; }
+    .brand-name { font-size:14px;line-height:1.35;font-weight:800; }
+    .brand-sub { font-size:11px;color:#b9c6e9;margin-top:4px; }
+    .nav-label { padding:0 12px; color:#93a4d0; font-size:10px; font-weight:800; letter-spacing:1.4px; text-transform:uppercase; }
+    .side-nav { display:grid; gap:6px; }
+    .nav-link { display:flex;align-items:center;gap:12px;width:100%;margin:0;padding:12px 13px;background:transparent;color:#dbe4ff;border:1px solid transparent;text-align:left;border-radius:10px;font-size:13px;font-weight:650;transition:.15s; }
+    .nav-link:hover { background:#ffffff10;color:#fff; }
+    .nav-link.active { background:#ffffff18;color:#fff;border-color:#ffffff1c;box-shadow:inset 3px 0 #8da6ff; }
+    .nav-icon { width:20px;text-align:center;font-size:16px; }
+    .sidebar-footer { margin-top:auto;padding:14px 12px;border-top:1px solid #ffffff24;color:#aebce0;font-size:11px;line-height:1.6; }
+    .app-main { min-width:0; }
+    header { background:#fff;color:var(--ink);padding:18px 30px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px; }
+    header h1 { font-size:21px;margin:0 0 4px;letter-spacing:-.5px; }
+    header p { color:var(--muted);font-size:12px;margin:0; }
+    .topbar-tag { border:1px solid var(--line);background:#f8fafc;color:#475569;border-radius:999px;padding:8px 12px;font-size:12px;white-space:nowrap; }
+    main { max-width:none;margin:0;padding:26px 30px 40px; }
+    .page-view { display:none; animation:fadeIn .18s ease-out; }
+    .page-view.active { display:block; }
+    .page-heading { display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin:0 0 20px; }
+    .page-heading h2 { margin:0;font-size:24px;letter-spacing:-.7px; }
+    .page-heading p { margin:6px 0 0;color:var(--muted);font-size:13px; }
+    .panel { background:var(--white);border:1px solid var(--line);border-radius:15px;padding:22px;margin-bottom:20px;box-shadow:0 5px 20px #18264b06; }
+    .panel h2 { font-size:18px;letter-spacing:-.25px;margin:0 0 8px; }
+    .panel h3 { font-size:14px;margin-top:24px; }
+    .muted { color:var(--muted);font-size:13px;line-height:1.55; }
+    .grid { gap:15px; }
+    input,select,textarea,button { border-radius:9px; }
+    input,select,textarea { border-color:#d8dfeb;background:#fff; }
+    input:focus,select:focus,textarea:focus { outline:3px solid #3659d91a;border-color:#7890e8; }
+    button { background:var(--blue);font-size:13px;min-height:40px;transition:background .15s,transform .15s; }
+    button:hover { background:#2948bd; }
+    button:active { transform:translateY(1px); }
+    .summary { background:#f8faff;border:1px solid #e8edfa;border-radius:11px; }
+    table { min-width:850px; }
+    th { color:#475569;font-size:11px;text-transform:uppercase;letter-spacing:.45px;background:#f7f9fd; }
+    td { font-size:13px; }
+    .table-wrap { border:1px solid var(--line);border-radius:10px; }
+    .table-wrap table { margin:0; }
+    .empty { font-size:13px; }
+    .dashboard-grid { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:22px; }
+    .metric-card { background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 5px 20px #18264b05;min-width:0; }
+    .metric-top { display:flex;justify-content:space-between;align-items:center;gap:8px;color:#64748b;font-size:12px;font-weight:650; }
+    .metric-icon { width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#eef2ff;color:#334fbd;font-size:17px; }
+    .metric-value { font-size:26px;font-weight:800;letter-spacing:-.8px;margin:13px 0 4px;overflow-wrap:anywhere; }
+    .metric-note { font-size:11px;color:#7b879a; }
+    .dashboard-columns { display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:18px; }
+    .dash-card { background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;min-width:0; }
+    .dash-card h3 { margin:0 0 5px;font-size:15px; }
+    .dash-card p { margin:0;color:var(--muted);font-size:12px; }
+    .quick-actions { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:17px; }
+    .quick-action { text-align:left;min-height:68px;margin:0;padding:13px;background:#f8faff;color:#1f2c4d;border:1px solid #e5eaf5; }
+    .quick-action:hover { background:#eef2ff;color:#1d3eaa;border-color:#cbd5ff; }
+    .quick-action strong { display:block;font-size:12px;margin-bottom:5px; }
+    .quick-action span { display:block;color:#718096;font-size:11px;font-weight:400; }
+    .dash-list { margin-top:16px;display:grid;gap:11px; }
+    .dash-list-row { display:flex;justify-content:space-between;gap:12px;padding-bottom:11px;border-bottom:1px solid #edf0f5;font-size:12px; }
+    .dash-list-row:last-child { border-bottom:0;padding-bottom:0; }
+    .dash-list-row strong { font-weight:750; }
+    .dashboard-error { font-size:12px;color:#9f1239;margin:8px 0; }
+    .page-view > section { width:100%; }
+    #party-management-panel, #party-ledger-panel { max-width:none!important;margin:0 0 20px!important; }
+    .mobile-menu { display:none; }
+    @keyframes fadeIn { from { opacity:.5;transform:translateY(3px); } to { opacity:1;transform:none; } }
+    @media(max-width:1100px) { .dashboard-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .app-shell { grid-template-columns:215px minmax(0,1fr); } main { padding:22px; } header { padding:16px 22px; } }
+    @media(max-width:760px) { .app-shell { display:block; } .sidebar { padding:12px;gap:12px; } .brand { padding:0 4px 10px;border:0; } .sidebar-footer,.nav-label { display:none; } .side-nav { display:flex;overflow-x:auto;padding-bottom:3px; } .nav-link { flex:0 0 auto;width:auto;padding:10px 12px;white-space:nowrap; } .nav-icon { display:none; } header { padding:16px; } header h1 { font-size:17px; } .topbar-tag { display:none; } main { padding:16px 12px 30px; } .page-heading h2 { font-size:21px; } .panel { padding:16px; } .dashboard-grid { gap:9px; } .metric-card { padding:13px; } .metric-value { font-size:21px; } .metric-top { font-size:11px;align-items:flex-start; } .metric-icon { width:29px;height:29px; } .dashboard-columns { grid-template-columns:1fr; } .quick-actions { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media(max-width:390px) { .dashboard-grid { grid-template-columns:1fr 1fr; } .metric-value { font-size:19px; } }
+
+  
+/* Professional productivity enhancements */
+.toolbar-filters{display:grid;grid-template-columns:minmax(180px,1fr) repeat(2,minmax(145px,190px)) auto;gap:10px;align-items:end;margin:14px 0 16px;padding:14px;background:#f8fafc;border:1px solid var(--line);border-radius:12px}
+.toolbar-filters label{font-size:12px;color:var(--muted);margin-bottom:5px}
+.toolbar-filters input,.toolbar-filters select{width:100%;min-width:0}
+.toolbar-filters .filter-actions{display:flex;gap:8px}
+.toolbar-filters .filter-actions button{margin:0;white-space:nowrap}
+.toolbar-note{font-size:12px;color:var(--muted);margin:-6px 0 12px}
+.print-only{display:none}
+@media(max-width:760px){
+  .toolbar-filters{grid-template-columns:1fr 1fr}
+  .toolbar-filters .search-field{grid-column:1/-1}
+  .toolbar-filters .filter-actions{grid-column:1/-1}
+  .toolbar-filters .filter-actions button{flex:1}
+  #orderForm .grid{grid-template-columns:1fr}
+  #orderItems .grid{grid-template-columns:1fr}
+  #orderItems .summary{padding:12px}
+  .table-wrap table{min-width:760px}
+}
+@media print{
+  body{background:#fff!important;color:#111!important}
+  .sidebar,header,.nav-link,.toolbar-filters,.toolbar-note,button,form,.sidebar-footer,.topbar-tag{display:none!important}
+  .app-shell,.app-main,main,.page-view{display:block!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important}
+  .page-view:not(.active){display:none!important}
+  .panel,.dash-card,.metric-card{box-shadow:none!important;border:1px solid #ccc!important;break-inside:avoid}
+  .table-wrap{overflow:visible!important}
+  table{min-width:0!important;width:100%!important;font-size:10px!important}
+  th,td{padding:5px!important}
+  .print-only{display:block!important}
+  a{color:#111!important;text-decoration:none!important}
+}
+
+  </style>
+</head>
+
+<body>
+  <div id="login-overlay" style="position:fixed;inset:0;z-index:99999;background:#f3f5f9;display:flex;align-items:center;justify-content:center;padding:20px;">
+    <form id="login-form" style="background:#fff;width:100%;max-width:420px;padding:28px;border-radius:14px;box-shadow:0 8px 30px #17203320;">
+      <h2 style="margin:0 0 8px;color:#172554;">Jai Shree Mahakal Garments</h2>
+      <p style="margin:0 0 20px;color:#64748b;">Shop AI login</p>
+      <label for="login-password" style="display:block;font-weight:bold;margin-bottom:7px;">Admin password</label>
+      <input id="login-password" type="password" autocomplete="current-password" required style="width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:7px;font:inherit;">
+      <button id="login-submit" type="submit" style="width:100%;padding:12px;margin-top:14px;background:#172554;color:white;border:0;border-radius:7px;font:inherit;font-weight:bold;cursor:pointer;">Login</button>
+      <p id="login-message" role="alert" style="color:#b91c1c;min-height:20px;font-size:14px;"></p>
+    </form>
+  </div>
+  <script>
+    (() => {
+      const overlay = document.getElementById('login-overlay');
+      const form = document.getElementById('login-form');
+      const password = document.getElementById('login-password');
+      const message = document.getElementById('login-message');
+      const submit = document.getElementById('login-submit');
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        message.textContent = '';
+        submit.disabled = true;
+        submit.textContent = 'Logging in...';
+        try {
+          const response = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: password.value }), credentials: 'same-origin' });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(result.error || 'Login failed.');
+          window.location.reload();
+        } catch (error) {
+          message.textContent = error.message || 'Login failed.';
+          submit.disabled = false;
+          submit.textContent = 'Login';
+          password.focus();
+        }
+      });
+      // Keep login visible until a valid session is confirmed by a protected API.
+      fetch('/api/products', { credentials: 'same-origin' }).then(response => {
+        if (response.ok) overlay.style.display = 'none';
+        else overlay.style.display = 'flex';
+      }).catch(() => { overlay.style.display = 'flex'; });
+    })();
+  </script>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">JM</div><div><div class="brand-name">Jai Shree Mahakal<br>Garments</div><div class="brand-sub">SHOP AI · WHOLESALE ERP</div></div></div>
+      <div class="nav-label">Workspace</div>
+      <nav class="side-nav" aria-label="Main navigation">
+        <button type="button" class="nav-link active" data-page="dashboard"><span class="nav-icon">▦</span>Dashboard</button>
+        <button type="button" class="nav-link" data-page="orders"><span class="nav-icon">▤</span>Orders & Dispatch</button>
+        <button type="button" class="nav-link" data-page="inventory"><span class="nav-icon">▣</span>Inventory & Factory</button>
+        <button type="button" class="nav-link" data-page="parties"><span class="nav-icon">♙</span>Parties & Ledger</button>
+        <button type="button" class="nav-link" data-page="reports"><span class="nav-icon">▥</span>Reports & History</button>
+      </nav>
+      <div class="sidebar-footer">Set-wise wholesale management<br>Inventory · Orders · Collections</div>
+    </aside>
+    <div class="app-main">
+  <header>
+    <h1>Jai Shree Mahakal Garments</h1>
+    <p>Shop AI · Set-wise Wholesale Inventory</p>
+    <div class="topbar-tag">● Local workspace</div>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>Add New Design</h2>
+      <p class="muted">
+        Har complete set mein selected size range ke har size ka
+        1 piece maana jayega. Stock sirf complete sets mein count hoga.
+      </p>
+
+      <form id="product-form">
+        <div class="grid">
+          <div>
+            <label for="design">Design Number *</label>
+            <input id="design" type="text" placeholder="e.g. B-101" required>
+          </div>
+
+          <div>
+            <label for="name">Product Name *</label>
+            <input id="name" type="text" placeholder="e.g. Kurta Pajama" required>
+          </div>
+
+          <div>
+            <label for="category">Category *</label>
+            <select id="category" required>
+              <option value="Boys Wear">Boys Wear</option>
+              <option value="Girls Wear">Girls Wear</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="price">Price per Set (optional)</label>
+            <input id="price" type="number" min="0" step="0.01"
+              placeholder="Leave blank if unknown">
+          </div>
+
+          <div>
+            <label for="stock">Complete Sets in Stock *</label>
+            <input id="stock" type="number" min="0" max="1000000"
+              step="1" value="0" required>
+          </div>
+
+          <div>
+            <label for="photo">Clothing Photo (optional)</label>
+            <input id="photo" type="file"
+              accept="image/jpeg,image/png,image/webp">
+            <p class="muted">JPG, PNG or WebP. Maximum 5 MB.</p>
+            <img id="photo-preview" class="preview" alt="Clothing preview">
+          </div>
+
+          <div>
+            <label for="sizeStart">Starting Size *</label>
+            <input id="sizeStart" type="number" min="1"
+              max="100000" step="1" value="1" required>
+          </div>
+
+          <div>
+            <label for="sizeEnd">Ending Size *</label>
+            <input id="sizeEnd" type="number" min="1"
+              max="100000" step="1" value="10" required>
+          </div>
+        </div>
+
+        <div class="summary">
+          <h3>Automatic Set Calculation</h3>
+          <p id="pieces-summary">Pieces per set: 10</p>
+          <p id="total-summary">Total garments: 0</p>
+          <p id="value-summary">Total stock value: Not calculated</p>
+        </div>
+
+        <button type="submit" id="save-button">
+          Save Design and Stock
+        </button>
+
+        <p id="message" class="message" role="status"></p>
+      </form>
+    </section>
+
+
+    <section class="panel" id="order-booking">
+      <h2>Order Booking</h2>
+      <p class="muted">Party ka order save karte hi system outstanding customer demand, current stock aur pehle se factory pending quantity check karke factory requirement automatically banayega. Stock sirf actual dispatch par deduct hoga.</p>
+
+      <form id="orderForm">
+        <div class="grid">
+          <div>
+            <label for="orderPartySearch">Party name ya mobile number *</label>
+            <input id="orderPartySearch" type="text" list="orderPartySuggestions" placeholder="Naam ya mobile number type karo" autocomplete="off" required>
+            <datalist id="orderPartySuggestions"></datalist>
+            <select id="orderParty" hidden aria-hidden="true" tabindex="-1">
+              <option value="">Loading parties...</option>
+            </select>
+          </div>
+          <div>
+            <label for="orderNotes">Order Notes (optional)</label>
+            <input id="orderNotes" type="text" placeholder="Order ke notes">
+          </div>
+        </div>
+
+        <h3>Order Designs</h3>
+        <div id="orderItems"></div>
+        <button type="button" id="addOrderItem" style="max-width:240px;">+ Add Another Design</button>
+         <p class="muted">New design stock mein nahi hai? Design row mein "+ New Design" select karo. New design ka starting stock 0 rahega.</p>
+
+        <div class="summary">
+          <p id="orderTotal">Order total: ₹0.00</p>
+        </div>
+        <button type="submit" id="saveOrderButton">Save Order</button>
+        <p id="orderMessage" class="message" role="status"></p>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Saved Orders</h2>
+      <p class="muted">Har design ko alag dispatch ya cancel kar sakte ho. Stock sirf actual dispatch par deduct hoga; cancellation ka record history mein rahega.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Date</th>
+              <th>Party</th>
+              <th>Designs</th>
+              <th>Order Total</th>
+              <th>Status</th>
+              <th>Dispatch by Design</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTable">
+            <tr><td colspan="8" class="empty">Loading orders...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+
+    <section class="panel" id="cancellation-history">
+      <h2>Order Cancellation History</h2>
+      <p class="muted">Cancelled sets, reason aur date ka record yahan dikhega. Cancellation se order total bhi cancelled quantity ke rate ke hisaab se kam hota hai.</p>
+      <button type="button" id="refreshCancellationHistory">Refresh Cancellation History</button>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Date</th><th>Order</th><th>Party</th><th>Design</th><th>Sets Cancelled</th><th>Dispatched Cancel?</th><th>Returned to Stock?</th><th>Reason</th><th>Notes</th></tr></thead>
+          <tbody id="cancellationHistoryTable"><tr><td colspan="9" class="empty">Loading cancellation history...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel" id="factory-inventory">
+      <h2>Factory & Inventory Dashboard</h2>
+      <p class="muted">Order book hone par stock deduct nahi hota. Factory se receive hua maal stock mein add hoga; stock sirf actual dispatch par kam hoga.</p>
+      <button type="button" id="refreshInventoryButton">Refresh Inventory</button>
+      <p id="inventoryMessage" class="message" role="status"></p>
+
+      <h3>Boys Wear Inventory</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Design</th><th>Product</th><th>Available Stock (Sets)</th><th>Factory Ordered</th><th>Factory Received</th><th>Factory Pending</th></tr></thead>
+          <tbody id="boysInventoryTable"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody>
+        </table>
+      </div>
+
+      <h3>Girls Wear Inventory</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Design</th><th>Product</th><th>Available Stock (Sets)</th><th>Factory Ordered</th><th>Factory Received</th><th>Factory Pending</th></tr></thead>
+          <tbody id="girlsInventoryTable"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody>
+        </table>
+      </div>
+
+      <h3>Manual / Additional Factory Order</h3>
+      <p class="muted">Normal customer order booking par factory requirement automatic ban jaati hai. Is form ka use sirf extra stock ya special production ke liye karo; same customer order ki requirement dobara manually mat banao.</p>
+      <form id="factoryOrderForm">
+        <div class="grid">
+          <div>
+            <label for="factoryOrderSelect">Customer Order *</label>
+            <select id="factoryOrderSelect" required><option value="">Loading orders...</option></select>
+          </div>
+          <div>
+            <label for="factoryItemSelect">Design in Order *</label>
+            <select id="factoryItemSelect" required><option value="">Select order first</option></select>
+          </div>
+          <div>
+            <label for="factoryStockDisplay">Current Shop Stock (sets)</label>
+            <input id="factoryStockDisplay" type="number" readonly value="0">
+          </div>
+          <div>
+            <label for="factoryNeededSets">Factory Quantity (sets) *</label>
+            <input id="factoryNeededSets" type="number" min="1" step="1" required value="1">
+          </div>
+        </div>
+        <label for="factoryOrderNotes">Factory Notes (optional)</label>
+        <input id="factoryOrderNotes" type="text" placeholder="e.g. urgent / expected date">
+        <button type="submit" id="saveFactoryOrderButton">Save Factory Order</button>
+        <p id="factoryOrderMessage" class="message" role="status"></p>
+      </form>
+
+      <h3>Factory Orders & Receiving</h3>
+      <p class="muted">Maal aane par receive quantity enter karo. Partial receiving bhi kar sakte ho; receive hote hi utne complete sets stock mein add honge.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Factory ID</th><th>Design</th><th>Section</th><th>Ordered</th><th>Received</th><th>Pending</th><th>Receive Now</th><th>Action</th></tr></thead>
+          <tbody id="factoryOrdersTable"><tr><td colspan="8" class="empty">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Product Catalogue</h2>
+      <p class="muted">
+        Saved designs, prices, complete sets and total garment quantities.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Photo</th>
+              <th>Design Number</th>
+              <th>Product</th>
+              <th>Price / Set</th>
+              <th>Size Range</th>
+              <th>Available Sets</th>
+              <th>Pieces / Set</th>
+              <th>Total Garments</th>
+              <th>Composition</th>
+            </tr>
+          </thead>
+          <tbody id="products">
+            <tr>
+              <td colspan="9" class="empty">Loading products...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("product-form");
+    const message = document.getElementById("message");
+    const productsTable = document.getElementById("products");
+    const photoInput = document.getElementById("photo");
+    const photoPreview = document.getElementById("photo-preview");
+    const saveButton = document.getElementById("save-button");
+
+    const designInput = document.getElementById("design");
+    const nameInput = document.getElementById("name");
+    const categoryInput = document.getElementById("category");
+    const priceInput = document.getElementById("price");
+    const stockInput = document.getElementById("stock");
+    const startInput = document.getElementById("sizeStart");
+    const endInput = document.getElementById("sizeEnd");
+
+    let previewUrl = null;
+
+    function getRange() {
+      const start = startInput.valueAsNumber;
+      const end = endInput.valueAsNumber;
+
+      if (
+        startInput.value.trim() === "" ||
+        endInput.value.trim() === "" ||
+        !Number.isSafeInteger(start) ||
+        !Number.isSafeInteger(end) ||
+        start < 1 ||
+        end < start ||
+        end - start > 199
+      ) {
+        throw new Error(
+          "Enter a valid size range containing at most 200 sizes."
+        );
+      }
+
+      return { start, end, piecesPerSet: end - start + 1 };
+    }
+
+    function updateSummary() {
+      const piecesElement = document.getElementById("pieces-summary");
+      const totalElement = document.getElementById("total-summary");
+      const valueElement = document.getElementById("value-summary");
+
+      try {
+        const { piecesPerSet } = getRange();
+        const stock = stockInput.valueAsNumber;
+        const price = priceInput.value === ""
+          ? null
+          : priceInput.valueAsNumber;
+
+        piecesElement.textContent = `Pieces per set: ${piecesPerSet}`;
+
+        if (
+          stockInput.value.trim() === "" ||
+          !Number.isSafeInteger(stock) ||
+          stock < 0
+        ) {
+          totalElement.textContent = "Enter a valid stock quantity.";
+        } else {
+          totalElement.textContent =
+            `Total garments: ${stock * piecesPerSet}`;
+        }
+
+        if (
+          price === null ||
+          !Number.isFinite(price) ||
+          price < 0 ||
+          !Number.isSafeInteger(stock) ||
+          stock < 0
+        ) {
+          valueElement.textContent = "Total stock value: Not calculated";
+        } else {
+          valueElement.textContent =
+            `Total stock value: ₹${(price * stock).toFixed(2)}`;
+        }
+      } catch (error) {
+        piecesElement.textContent = error.message;
+        totalElement.textContent = "Total garments: —";
+        valueElement.textContent = "Total stock value: —";
+      }
+    }
+
+    startInput.addEventListener("input", updateSummary);
+    endInput.addEventListener("input", updateSummary);
+    stockInput.addEventListener("input", updateSummary);
+    priceInput.addEventListener("input", updateSummary);
+
+    photoInput.addEventListener("change", () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      previewUrl = null;
+      photoPreview.removeAttribute("src");
+      photoPreview.style.display = "none";
+
+      const file = photoInput.files[0];
+      if (!file) return;
+
+      if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+        message.textContent = "Choose a JPG, PNG or WebP photo.";
+        photoInput.value = "";
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        message.textContent = "Photo must be 5 MB or smaller.";
+        photoInput.value = "";
+        return;
+      }
+
+      previewUrl = URL.createObjectURL(file);
+      photoPreview.src = previewUrl;
+      photoPreview.style.display = "block";
+      message.textContent = "";
+    });
+
+    async function loadProducts() {
+      try {
+        const response = await fetch("/api/products");
+        if (!response.ok) throw new Error("Could not load products.");
+
+        const products = await response.json();
+        productsTable.replaceChildren();
+
+        if (!products.length) {
+          const row = productsTable.insertRow();
+          const cell = row.insertCell();
+          cell.colSpan = 9;
+          cell.className = "empty";
+          cell.textContent = "No designs added yet.";
+          return;
+        }
+
+        for (const product of products) {
+          const row = productsTable.insertRow();
+          const photoCell = row.insertCell();
+
+          if (product.photoUrl) {
+            const img = document.createElement("img");
+            img.src = product.photoUrl;
+            img.alt = `Design ${product.designNumber}`;
+            img.className = "product-photo";
+            img.loading = "lazy";
+            photoCell.appendChild(img);
+          } else {
+            photoCell.textContent = "No photo";
+          }
+
+          const values = [
+            product.designNumber,
+            `${product.name} (${product.category})`,
+            product.price == null
+              ? "Not set"
+              : `₹${Number(product.price).toFixed(2)}`,
+            `${product.sizeStart}–${product.sizeEnd}`,
+            product.stockSets,
+            product.piecesPerSet,
+            product.totalGarments,
+            Object.entries(product.composition || {})
+              .map(([size, quantity]) => `${size}: ${quantity}`)
+              .join(", ")
+          ];
+
+          for (const value of values) {
+            row.insertCell().textContent = String(value);
+          }
+        }
+      } catch (error) {
+        productsTable.replaceChildren();
+        const row = productsTable.insertRow();
+        const cell = row.insertCell();
+        cell.colSpan = 9;
+        cell.className = "empty";
+        cell.textContent = error.message;
+      }
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (saveButton.disabled) return;
+
+      saveButton.disabled = true;
+      message.textContent = "Saving design...";
+
+      try {
+        const designNumber = designInput.value.trim();
+        const name = nameInput.value.trim();
+        const category = categoryInput.value;
+        const stock = stockInput.valueAsNumber;
+        const { start, end, piecesPerSet } = getRange();
+
+        if (!designNumber || !name) {
+          throw new Error("Enter design number and product name.");
+        }
+
+        if (!["Boys Wear", "Girls Wear"].includes(category)) {
+          throw new Error("Select a valid category.");
+        }
+
+        if (
+          stockInput.value.trim() === "" ||
+          !Number.isSafeInteger(stock) ||
+          stock < 0 ||
+          stock > 1000000
+        ) {
+          throw new Error("Enter a valid number of complete sets.");
+        }
+
+        const price = priceInput.value === ""
+          ? null
+          : priceInput.valueAsNumber;
+
+        if (
+          price !== null &&
+          (!Number.isFinite(price) || price < 0)
+        ) {
+          throw new Error("Enter a valid price or leave it blank.");
+        }
+
+        const photo = photoInput.files[0];
+
+        if (photo && photo.size > 5 * 1024 * 1024) {
+          throw new Error("Photo must be 5 MB or smaller.");
+        }
+
+        if (
+          photo &&
+          !["image/jpeg", "image/png", "image/webp"].includes(photo.type)
+        ) {
+          throw new Error("Choose a JPG, PNG or WebP photo.");
+        }
+
+        const composition = {};
+        for (let size = start; size <= end; size++) {
+          composition[String(size)] = 1;
+        }
+
+        const formData = new FormData();
+        formData.append("designNumber", designNumber);
+        formData.append("name", name);
+        formData.append("category", category);
+        formData.append("price", price === null ? "" : String(price));
+        formData.append("stockSets", String(stock));
+        formData.append("sizeStart", String(start));
+        formData.append("sizeEnd", String(end));
+        formData.append("composition", JSON.stringify(composition));
+
+        if (photo) formData.append("photo", photo);
+
+        const response = await fetch("/api/products", {
+          method: "POST",
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || "Could not save design.");
+        }
+
+        message.textContent =
+          `${result.message} ${stock} sets, ${stock * piecesPerSet} garments.`;
+
+        form.reset();
+        startInput.value = "1";
+        endInput.value = "10";
+
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        previewUrl = null;
+        photoPreview.removeAttribute("src");
+        photoPreview.style.display = "none";
+
+        updateSummary();
+        await loadProducts();
+      } catch (error) {
+        message.textContent = error.message;
+      } finally {
+        saveButton.disabled = false;
+      }
+    });
+
+    updateSummary();
+    loadProducts();
+  </script>
+
+<section style="max-width:900px;margin:30px auto;padding:20px;border:1px solid #ddd;border-radius:12px;font-family:Arial,sans-serif;">
+  <h2>Party Management</h2>
+
+  <form id="partyForm">
+    <label>Party Name *</label>
+    <input name="name" required placeholder="Party ka naam"
+      style="display:block;width:100%;padding:10px;margin:6px 0 14px;box-sizing:border-box;">
+
+    <label>Mobile Number</label>
+    <input name="phone" type="tel" placeholder="Mobile number"
+      style="display:block;width:100%;padding:10px;margin:6px 0 14px;box-sizing:border-box;">
+
+    <label>Address</label>
+    <textarea name="address" placeholder="Party ka address"
+      style="display:block;width:100%;padding:10px;margin:6px 0 14px;box-sizing:border-box;"></textarea>
+
+    <label>Opening Balance (₹)</label>
+    <input name="opening_balance" type="number" step="0.01" value="0"
+      style="display:block;width:100%;padding:10px;margin:6px 0 14px;box-sizing:border-box;">
+
+    <button type="submit" style="padding:12px 22px;cursor:pointer;">
+      Save Party
+    </button>
+  </form>
+
+  <p id="partyMessage" role="status"></p>
+
+  <h3>Saved Parties</h3>
+  <input id="partySearch" placeholder="Party name ya mobile search karo"
+    style="width:100%;padding:10px;box-sizing:border-box;">
+
+  <div id="partyList" style="margin-top:15px;">Loading parties...</div>
+</section>
+
+<script>
+(() => {
+  const form = document.getElementById("partyForm");
+  const message = document.getElementById("partyMessage");
+  const list = document.getElementById("partyList");
+  const search = document.getElementById("partySearch");
+  let parties = [];
+
+  function renderParties() {
+    const term = search.value.trim().toLowerCase();
+    const filtered = parties.filter(p =>
+      (p.name || "").toLowerCase().includes(term) ||
+      (p.phone || "").toLowerCase().includes(term)
+    );
+
+    list.replaceChildren();
+
+    if (!filtered.length) {
+      list.textContent = "Abhi koi party nahi mili.";
+      return;
+    }
+
+    filtered.forEach(p => {
+      const card = document.createElement("div");
+      card.style.cssText =
+        "padding:12px;border:1px solid #ddd;border-radius:8px;margin:10px 0;";
+
+      const name = document.createElement("strong");
+      name.textContent = p.name;
+      card.appendChild(name);
+
+      const details = document.createElement("p");
+      details.textContent =
+        "Mobile: " + (p.phone || "—") +
+        " | Address: " + (p.address || "—");
+      card.appendChild(details);
+
+      const balance = document.createElement("p");
+      balance.textContent =
+        "Opening Balance: ₹" +
+        Number(p.opening_balance || 0).toFixed(2);
+      card.appendChild(balance);
+
+      list.appendChild(card);
+    });
+  }
+
+  async function loadParties() {
+    try {
+      const response = await fetch("/api/parties");
+      if (!response.ok) throw new Error("Parties load nahi hui.");
+      parties = await response.json();
+      renderParties();
+    } catch (error) {
+      list.textContent = error.message;
+    }
+  }
+
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+    message.textContent = "Saving...";
+
+    const payload = Object.fromEntries(new FormData(form).entries());
+    payload.opening_balance = Number(payload.opening_balance || 0);
+
+    try {
+      const response = await fetch("/api/parties", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.error || "Party save nahi hui.");
+      }
+
+      message.textContent = "Party successfully save ho gayi!";
+      form.reset();
+      form.elements.opening_balance.value = "0";
+      await loadParties();
+    } catch (error) {
+      message.textContent = error.message;
+    }
+  });
+
+  search.addEventListener("input", renderParties);
+  loadParties();
+})();
+</script>
+
+
+<script>
+(() => {
+  const orderForm = document.getElementById("orderForm");
+  if (!orderForm) return;
+
+  const partySelect = document.getElementById("orderParty");
+  const partySearch = document.getElementById("orderPartySearch");
+  const partySuggestions = document.getElementById("orderPartySuggestions");
+  const itemsContainer = document.getElementById("orderItems");
+  const addItemButton = document.getElementById("addOrderItem");
+  const orderTotal = document.getElementById("orderTotal");
+  const orderMessage = document.getElementById("orderMessage");
+  const saveOrderButton = document.getElementById("saveOrderButton");
+  const ordersTable = document.getElementById("ordersTable");
+
+  let availableParties = [];
+  let availableProducts = [];
+
+  function money(value) {
+    return "₹" + Number(value || 0).toFixed(2);
+  }
+
+  async function readJson(response) {
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(data.error || data.message || "Request failed.");
+    }
+    return data;
+  }
+
+  async function loadOrderChoices() {
+    try {
+      const [partyResponse, productResponse] = await Promise.all([
+        fetch("/api/parties"),
+        fetch("/api/products")
+      ]);
+      availableParties = await readJson(partyResponse);
+      availableProducts = await readJson(productResponse);
+
+      partySelect.replaceChildren();
+      const placeholder = document.createElement("option");
+      placeholder.value = "";
+      placeholder.textContent = availableParties.length
+        ? "Select party"
+        : "Pehle Party Management mein party add karo";
+      partySelect.appendChild(placeholder);
+
+      partySuggestions.replaceChildren();
+      availableParties.forEach(party => {
+        const label = `${party.name}${party.phone ? " — " + party.phone : ""}`;
+        const option = document.createElement("option");
+        option.value = String(party.id);
+        option.textContent = label;
+        partySelect.appendChild(option);
+
+        const suggestion = document.createElement("option");
+        suggestion.value = label;
+        partySuggestions.appendChild(suggestion);
+      });
+
+      if (!itemsContainer.children.length) addOrderItemRow();
+    } catch (error) {
+      orderMessage.textContent = "Order form load nahi hua: " + error.message;
+    }
+  }
+
+  function addOrderItemRow() {
+    const row = document.createElement("div");
+    row.className = "summary";
+    row.style.border = "1px solid #e2e8f0";
+
+    const grid = document.createElement("div");
+    grid.className = "grid";
+
+    const productWrap = document.createElement("div");
+    const productLabel = document.createElement("label");
+    productLabel.textContent = "Design *";
+    const searchId = `orderDesignSearch${Date.now()}${Math.floor(Math.random()*100000)}`;
+    const datalistId = `${searchId}Suggestions`;
+    const productSearch = document.createElement("input");
+    productSearch.type = "text";
+    productSearch.required = true;
+    productSearch.className = "order-product-search";
+    productSearch.id = searchId;
+    productSearch.setAttribute("list", datalistId);
+    productSearch.autocomplete = "off";
+    productSearch.placeholder = availableProducts.length ? "Design number type karo" : "Pehle design add karo";
+    const suggestions = document.createElement("datalist");
+    suggestions.id = datalistId;
+    const productSelect = document.createElement("select");
+    productSelect.required = false;
+    productSelect.className = "order-product";
+    productSelect.hidden = true;
+    productSelect.setAttribute("aria-hidden", "true");
+    productSelect.tabIndex = -1;
+    const emptyOption = document.createElement("option");
+    emptyOption.value = "";
+    productSelect.appendChild(emptyOption);
+
+    availableProducts.forEach(product => {
+      const label = `${product.designNumber} — ${product.name} (Stock: ${product.stockSets} sets)`;
+      const option = document.createElement("option");
+      option.value = String(product.id);
+      option.textContent = label;
+      option.dataset.price = product.price == null ? "" : String(product.price);
+      productSelect.appendChild(option);
+      const suggestion = document.createElement("option");
+      suggestion.value = label;
+      suggestions.appendChild(suggestion);
+    });
+    const newToggle = document.createElement("label");
+    newToggle.style.marginTop = "10px";
+    const newCheckbox = document.createElement("input");
+    newCheckbox.type = "checkbox";
+    newCheckbox.className = "order-is-new";
+    newCheckbox.style.width = "auto";
+    newToggle.append(newCheckbox, document.createTextNode(" + New Design (not in catalogue)"));
+    const newFields = document.createElement("div");
+    newFields.className = "grid order-new-fields";
+    newFields.hidden = true;
+    newFields.style.marginTop = "10px";
+    function newField(labelText, cls, type, value) {
+      const wrap = document.createElement("div");
+      const label = document.createElement("label");
+      label.textContent = labelText;
+      const field = document.createElement("input");
+      field.className = cls;
+      field.type = type;
+      if (value != null) field.value = value;
+      wrap.append(label, field);
+      newFields.appendChild(wrap);
+      return field;
+    }
+    newField("New Design Number *", "new-design-number", "text");
+    newField("Product Name *", "new-design-name", "text");
+    const categoryWrap = document.createElement("div");
+    const categoryLabel = document.createElement("label");
+    categoryLabel.textContent = "Section *";
+    const newCategory = document.createElement("select");
+    newCategory.className = "new-design-category";
+    for (const cat of ["Boys Wear", "Girls Wear"]) {
+      const opt = document.createElement("option"); opt.value = cat; opt.textContent = cat;
+      newCategory.appendChild(opt);
+    }
+    categoryWrap.append(categoryLabel, newCategory);
+    newFields.appendChild(categoryWrap);
+    newField("Starting Size *", "new-size-start", "number", "1");
+    newField("Ending Size *", "new-size-end", "number", "10");
+    newCheckbox.addEventListener("change", () => {
+      newFields.hidden = !newCheckbox.checked;
+      productSearch.disabled = newCheckbox.checked;
+      productSearch.required = !newCheckbox.checked;
+      productSelect.value = "";
+      row.dataset.createdProductId = "";
+      row.dataset.createdDesignKey = "";
+      updateOrderTotal();
+    });
+    productWrap.append(productLabel, productSearch, suggestions, productSelect, newToggle);
+
+    productSearch.addEventListener("input", () => {
+      const query = productSearch.value.trim().toLowerCase();
+      const match = availableProducts.find(product => {
+        const label = `${product.designNumber} — ${product.name} (Stock: ${product.stockSets} sets)`;
+        return query && (label.toLowerCase() === query || String(product.designNumber).toLowerCase() === query);
+      });
+      productSelect.value = match ? String(match.id) : "";
+      if (match && match.price != null) rateInput.value = String(match.price);
+      updateOrderTotal();
+    });
+
+    const setsWrap = document.createElement("div");
+    const setsLabel = document.createElement("label");
+    setsLabel.textContent = "Order Sets *";
+    const setsInput = document.createElement("input");
+    setsInput.type = "number";
+    setsInput.min = "1";
+    setsInput.step = "1";
+    setsInput.required = true;
+    setsInput.value = "1";
+    setsInput.className = "order-sets";
+    setsWrap.append(setsLabel, setsInput);
+
+    const rateWrap = document.createElement("div");
+    const rateLabel = document.createElement("label");
+    rateLabel.textContent = "Rate per Set (₹) *";
+    const rateInput = document.createElement("input");
+    rateInput.type = "number";
+    rateInput.min = "0";
+    rateInput.step = "0.01";
+    rateInput.required = true;
+    rateInput.value = "";
+    rateInput.placeholder = "Enter rate";
+    rateInput.className = "order-rate";
+    rateWrap.append(rateLabel, rateInput);
+
+    const lineWrap = document.createElement("div");
+    const lineLabel = document.createElement("label");
+    lineLabel.textContent = "Line Total";
+    const lineValue = document.createElement("p");
+    lineValue.className = "order-line-total";
+    lineValue.textContent = money(0);
+    lineWrap.append(lineLabel, lineValue);
+
+    grid.append(productWrap, setsWrap, rateWrap, lineWrap);
+
+    const removeButton = document.createElement("button");
+    removeButton.type = "button";
+    removeButton.textContent = "Remove Design";
+    removeButton.style.background = "#9f1239";
+    removeButton.addEventListener("click", () => {
+      row.remove();
+      updateOrderTotal();
+      if (!itemsContainer.children.length) addOrderItemRow();
+    });
+
+    productSearch.addEventListener("change", () => {
+      const query = productSearch.value.trim().toLowerCase();
+      const match = availableProducts.find(product => {
+        const label = `${product.designNumber} — ${product.name} (Stock: ${product.stockSets} sets)`;
+        return label.toLowerCase() === query || String(product.designNumber).toLowerCase() === query;
+      });
+      productSelect.value = match ? String(match.id) : "";
+      if (match && match.price != null) rateInput.value = String(match.price);
+      updateOrderTotal();
+    });
+    setsInput.addEventListener("input", updateOrderTotal);
+    rateInput.addEventListener("input", updateOrderTotal);
+
+    row.append(grid, newFields, removeButton);
+    itemsContainer.appendChild(row);
+    updateOrderTotal();
+  }
+
+  function getOrderRows() {
+    return [...itemsContainer.querySelectorAll(".summary")];
+  }
+
+  function updateOrderTotal() {
+    let total = 0;
+    for (const row of getOrderRows()) {
+      const sets = Number(row.querySelector(".order-sets").value);
+      const rate = Number(row.querySelector(".order-rate").value);
+      const line = Number.isSafeInteger(sets) && sets > 0 &&
+        Number.isFinite(rate) && rate >= 0 ? sets * rate : 0;
+      row.querySelector(".order-line-total").textContent = money(line);
+      total += line;
+    }
+    orderTotal.textContent = "Order total: " + money(total);
+  }
+
+  async function loadOrders() {
+    try {
+      const response = await fetch("/api/orders");
+      const orders = await readJson(response);
+      ordersTable.replaceChildren();
+
+      if (!orders.length) {
+        const tr = ordersTable.insertRow();
+        const td = tr.insertCell();
+        td.colSpan = 8;
+        td.className = "empty";
+        td.textContent = "Abhi koi order save nahi hua.";
+        return;
+      }
+
+      orders.forEach(order => {
+        const tr = ordersTable.insertRow();
+        const items = Array.isArray(order.order_items) ? order.order_items : [];
+        const designs = items.map(item => {
+          const product = item.products || {};
+          return `${product.design_number || "Design"} (${item.sets} sets)`;
+        }).join(", ");
+
+        const date = order.order_date
+          ? new Date(order.order_date).toLocaleDateString()
+          : "—";
+        const party = order.parties?.name || ("Party #" + order.party_id);
+        const values = [
+          "#" + order.id,
+          date,
+          party,
+          designs || "—",
+          money(order.total_amount),
+          order.status || "—"
+        ];
+        values.forEach(value => tr.insertCell().textContent = String(value));
+
+        const dispatchCell = tr.insertCell();
+        dispatchCell.style.minWidth = "260px";
+        if (!items.length) {
+          dispatchCell.textContent = "No designs";
+        } else {
+          items.forEach(item => {
+            const product = item.products || {};
+            const block = document.createElement("div");
+            block.style.cssText = "border:1px solid #e2e8f0;border-radius:8px;padding:8px;margin:6px 0;";
+            const title = document.createElement("div");
+            title.style.fontWeight = "bold";
+            const orderedSets = Number(item.sets || 0);
+            const dispatchedSets = Number(item.dispatchedSets || 0);
+            const cancelledSets = Number(item.cancelledSets || 0);
+            const cancelledDispatchedSets = Number(item.cancelledDispatchedSets || 0);
+            const returnedStockSets = Number(item.returnedStockSets || 0);
+            const pendingSets = Number(item.pendingSets ?? orderedSets);
+            title.textContent = `${product.design_number || "Design"} — Ordered: ${orderedSets} | Dispatched: ${dispatchedSets} | Cancelled: ${cancelledSets} (dispatched ${cancelledDispatchedSets}) | Returned to stock: ${returnedStockSets} | Remaining: ${pendingSets} sets`;
+            block.appendChild(title);
+            if (Number(item.pendingSets ?? item.sets) > 0 && String(order.status).toLowerCase() !== "cancelled") {
+              const input = document.createElement("input");
+              input.type = "number";
+              input.min = "1";
+              input.max = String(Number(item.pendingSets ?? item.sets));
+              input.step = "1";
+              input.value = String(Number(item.pendingSets ?? item.sets));
+              input.className = "dispatch-quantity";
+              input.dataset.itemId = String(item.id);
+              input.setAttribute("aria-label", `Dispatch quantity for ${product.design_number || "design"}`);
+              input.style.marginTop = "6px";
+              const button = document.createElement("button");
+              button.type = "button";
+              button.textContent = "Dispatch";
+              button.className = "dispatch-order-item-button";
+              button.dataset.itemId = String(item.id);
+              button.style.marginTop = "6px";
+              button.addEventListener("click", () => dispatchOrderItem(button));
+              block.append(input, button);
+
+              const cancelReason = document.createElement("input");
+              cancelReason.type = "text";
+              cancelReason.placeholder = "Cancellation reason (required)";
+              cancelReason.className = "cancel-reason";
+              cancelReason.dataset.itemId = String(item.id);
+              cancelReason.style.marginTop = "6px";
+              cancelReason.setAttribute("aria-label", `Cancellation reason for ${product.design_number || "design"}`);
+              const cancelButton = document.createElement("button");
+              cancelButton.type = "button";
+              cancelButton.textContent = "Cancel Remaining Sets";
+              cancelButton.className = "cancel-order-item-button";
+              cancelButton.dataset.itemId = String(item.id);
+              cancelButton.style.cssText = "margin-top:6px;background:#9f1239;";
+              cancelButton.addEventListener("click", () => cancelOrderItem(cancelButton));
+              block.append(cancelReason, cancelButton);
+            } else {
+              const done = document.createElement("div");
+              done.textContent = "No pending sets for dispatch/cancellation";
+              done.style.color = "#64748b";
+              block.appendChild(done);
+            }
+
+            const availableDispatchedToCancel = Math.max(0, dispatchedSets - cancelledDispatchedSets);
+            if (availableDispatchedToCancel > 0) {
+              const divider = document.createElement("hr");
+              divider.style.border = "0";
+              divider.style.borderTop = "1px solid #e2e8f0";
+              divider.style.margin = "10px 0";
+              block.appendChild(divider);
+              const returnedLabel = document.createElement("label");
+              returnedLabel.textContent = `Cancel dispatched sets (up to ${availableDispatchedToCancel})`;
+              returnedLabel.style.marginTop = "6px";
+              const dispatchedCancelInput = document.createElement("input");
+              dispatchedCancelInput.type = "number";
+              dispatchedCancelInput.min = "1";
+              dispatchedCancelInput.max = String(availableDispatchedToCancel);
+              dispatchedCancelInput.step = "1";
+              dispatchedCancelInput.value = "1";
+              dispatchedCancelInput.className = "cancel-dispatched-quantity";
+              dispatchedCancelInput.dataset.itemId = String(item.id);
+              const dispatchedCancelReason = document.createElement("input");
+              dispatchedCancelReason.type = "text";
+              dispatchedCancelReason.placeholder = "Reason for cancelling dispatched sets (required)";
+              dispatchedCancelReason.className = "cancel-dispatched-reason";
+              dispatchedCancelReason.dataset.itemId = String(item.id);
+              dispatchedCancelReason.style.marginTop = "8px";
+              const returnedCheckboxLabel = document.createElement("label");
+              returnedCheckboxLabel.style.cssText = "display:flex;align-items:center;gap:8px;font-weight:normal;margin-top:8px;";
+              const returnedCheckbox = document.createElement("input");
+              returnedCheckbox.type = "checkbox";
+              returnedCheckbox.className = "returned-to-stock";
+              returnedCheckbox.dataset.itemId = String(item.id);
+              returnedCheckbox.style.width = "auto";
+              returnedCheckboxLabel.append(returnedCheckbox, document.createTextNode("Maal shop mein wapas aa gaya — stock mein add karo"));
+              const dispatchedCancelButton = document.createElement("button");
+              dispatchedCancelButton.type = "button";
+              dispatchedCancelButton.textContent = "Cancel Dispatched Sets";
+              dispatchedCancelButton.style.cssText = "margin-top:8px;background:#7c2d12;";
+              dispatchedCancelButton.dataset.itemId = String(item.id);
+              dispatchedCancelButton.addEventListener("click", () => cancelDispatchedOrderItem(dispatchedCancelButton));
+              block.append(returnedLabel, dispatchedCancelInput, dispatchedCancelReason, returnedCheckboxLabel, dispatchedCancelButton);
+            }
+            dispatchCell.appendChild(block);
+          });
+        }
+        tr.insertCell().textContent = String(order.notes || "—");
+      });
+    } catch (error) {
+      ordersTable.replaceChildren();
+      const tr = ordersTable.insertRow();
+      const td = tr.insertCell();
+      td.colSpan = 8;
+      td.className = "empty";
+      td.textContent = "Orders load nahi hue: " + error.message;
+    }
+  }
+
+  async function dispatchOrderItem(button) {
+    const itemId = Number(button.dataset.itemId);
+    const input = ordersTable.querySelector(`.dispatch-quantity[data-item-id="${itemId}"]`);
+    const sets = Number(input?.value);
+    if (!Number.isSafeInteger(sets) || sets < 1) {
+      orderMessage.textContent = "Dispatch quantity positive whole sets mein enter karo.";
+      return;
+    }
+    button.disabled = true;
+    orderMessage.textContent = "Dispatch save ho raha hai...";
+    try {
+      const response = await fetch(`/api/order-items/${itemId}/dispatch`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sets })
+      });
+      const result = await readJson(response);
+      orderMessage.textContent = `Dispatch save ho gaya. Order #${result.orderId} mein sabhi designs mila kar ${result.remainingSets} sets abhi pending hain.`;
+      await loadOrders();
+      await loadProducts();
+      window.dispatchEvent(new Event("shop-order-saved"));
+    } catch (error) {
+      orderMessage.textContent = "Dispatch nahi hua: " + error.message;
+      console.error("Dispatch failed:", error);
+    } finally {
+      button.disabled = false;
+    }
+  }
+
+  async function cancelOrderItem(button) {
+    const itemId = Number(button.dataset.itemId);
+    const input = ordersTable.querySelector(`.dispatch-quantity[data-item-id="${itemId}"]`);
+    const reasonInput = ordersTable.querySelector(`.cancel-reason[data-item-id="${itemId}"]`);
+    const sets = Number(input?.value);
+    const reason = reasonInput?.value.trim() || "";
+    if (!Number.isSafeInteger(sets) || sets < 1) {
+      orderMessage.textContent = "Cancellation quantity positive whole sets mein enter karo.";
+      return;
+    }
+    if (!reason) {
+      orderMessage.textContent = "Cancellation se pehle reason likho.";
+      reasonInput?.focus();
+      return;
+    }
+    if (!window.confirm(`${sets} pending sets cancel karne hain? Yeh action history mein record hoga.`)) return;
+    button.disabled = true;
+    orderMessage.textContent = "Cancellation save ho rahi hai...";
+    try {
+      const response = await fetch(`/api/order-items/${itemId}/cancel`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sets, reason })
+      });
+      const result = await readJson(response);
+      orderMessage.textContent = `Cancellation save ho gayi. Order #${result.orderId}: ${result.cancelledNow} sets cancel, ${result.orderRemainingSets} sets abhi pending.`;
+      await loadOrders();
+      await loadProducts();
+      window.dispatchEvent(new Event("shop-order-saved"));
+    } catch (error) {
+      orderMessage.textContent = "Cancellation nahi hui: " + error.message;
+      console.error("Cancellation failed:", error);
+    } finally {
+      button.disabled = false;
+    }
+  }
+
+  async function cancelDispatchedOrderItem(button) {
+    const itemId = Number(button.dataset.itemId);
+    const input = ordersTable.querySelector(`.cancel-dispatched-quantity[data-item-id="${itemId}"]`);
+    const returnedCheckbox = ordersTable.querySelector(`.returned-to-stock[data-item-id="${itemId}"]`);
+    const reasonInput = ordersTable.querySelector(`.cancel-dispatched-reason[data-item-id="${itemId}"]`);
+    const sets = Number(input?.value);
+    const reason = reasonInput?.value.trim() || "";
+    const returnedToStock = Boolean(returnedCheckbox?.checked);
+    if (!Number.isSafeInteger(sets) || sets < 1) {
+      orderMessage.textContent = "Dispatched cancellation quantity positive whole sets mein enter karo.";
+      return;
+    }
+    if (!reason) {
+      orderMessage.textContent = "Cancellation se pehle upar reason likho.";
+      reasonInput?.focus();
+      return;
+    }
+    const stockText = returnedToStock ? "Returned maal shop stock mein add hoga." : "Stock mein kuch add nahi hoga.";
+    if (!window.confirm(`${sets} already-dispatched sets cancel karne hain? ${stockText} This action will be recorded.`)) return;
+    button.disabled = true;
+    orderMessage.textContent = "Dispatched cancellation save ho rahi hai...";
+    try {
+      const response = await fetch(`/api/order-items/${itemId}/cancel-dispatched`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sets, reason, returnedToStock })
+      });
+      const result = await readJson(response);
+      orderMessage.textContent = `Dispatched cancellation saved. ${result.cancelledNow || sets} sets cancelled. ${returnedToStock ? "Returned sets stock mein add ho gaye." : "Stock unchanged."}`;
+      await loadOrders();
+      await loadProducts();
+      window.dispatchEvent(new Event("shop-order-saved"));
+    } catch (error) {
+      orderMessage.textContent = "Dispatched cancellation nahi hui: " + error.message;
+      console.error("Dispatched cancellation failed:", error);
+    } finally {
+      button.disabled = false;
+    }
+  }
+
+  partySearch.addEventListener("input", () => {
+    const query = partySearch.value.trim().toLowerCase();
+    const match = availableParties.find(party => {
+      const label = `${party.name}${party.phone ? " — " + party.phone : ""}`.toLowerCase();
+      return query && (label === query || String(party.name).toLowerCase() === query || String(party.phone || "").replace(/\D/g, "") === query.replace(/\D/g, ""));
+    });
+    partySelect.value = match ? String(match.id) : "";
+  });
+
+  partySearch.addEventListener("change", () => {
+    const query = partySearch.value.trim().toLowerCase();
+    const match = availableParties.find(party => {
+      const label = `${party.name}${party.phone ? " — " + party.phone : ""}`.toLowerCase();
+      return label === query || String(party.name).toLowerCase() === query || String(party.phone || "").replace(/\D/g, "") === query.replace(/\D/g, "");
+    });
+    partySelect.value = match ? String(match.id) : "";
+  });
+
+  addItemButton.addEventListener("click", addOrderItemRow);
+
+  orderForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    if (saveOrderButton.disabled) return;
+
+    orderMessage.textContent = "";
+    const items = [];
+    const seenProducts = new Set();
+
+    try {
+      const partyQuery = partySearch.value.trim().toLowerCase();
+      const chosenParty = availableParties.find(party => {
+        const label = `${party.name}${party.phone ? " — " + party.phone : ""}`.toLowerCase();
+        return partyQuery && (label === partyQuery || String(party.name).toLowerCase() === partyQuery || String(party.phone || "").replace(/\D/g, "") === partyQuery.replace(/\D/g, ""));
+      });
+      if (chosenParty) partySelect.value = String(chosenParty.id);
+      if (!partySelect.value) throw new Error("Party ke suggestions mein se naam/mobile select karo.");
+
+      // Validate all rows BEFORE creating any new catalogue entries.
+      const rowsToSave = [];
+      const seenDesigns = new Set();
+      for (const row of getOrderRows()) {
+        const isNew = row.querySelector(".order-is-new").checked;
+        const setsValue = row.querySelector(".order-sets").value;
+        const rateValue = row.querySelector(".order-rate").value;
+        const sets = Number(setsValue);
+        const ratePerSet = Number(rateValue);
+        if (!Number.isSafeInteger(sets) || sets <= 0) throw new Error("Order sets positive whole number hone chahiye.");
+        if (rateValue.trim() === "" || !Number.isFinite(ratePerSet) || ratePerSet < 0) throw new Error("Valid rate per set enter karo.");
+        if (isNew) {
+          const designNumber = row.querySelector(".new-design-number").value.trim();
+          const name = row.querySelector(".new-design-name").value.trim();
+          const category = row.querySelector(".new-design-category").value;
+          const sizeStart = Number(row.querySelector(".new-size-start").value);
+          const sizeEnd = Number(row.querySelector(".new-size-end").value);
+          if (!designNumber || !name || !Number.isSafeInteger(sizeStart) || !Number.isSafeInteger(sizeEnd) || sizeStart < 1 || sizeEnd < sizeStart || sizeEnd - sizeStart > 199) {
+            throw new Error("New design ka number, name aur valid size range bharo.");
+          }
+          const key = "design:" + designNumber.toLowerCase();
+          if (seenDesigns.has(key) || availableProducts.some(p => String(p.designNumber).toLowerCase() === designNumber.toLowerCase())) {
+            throw new Error("Duplicate design number hai. Existing design select karo.");
+          }
+          seenDesigns.add(key);
+          rowsToSave.push({ row, isNew, designNumber, name, category, sizeStart, sizeEnd, sets, ratePerSet });
+        } else {
+          const productId = Number(row.querySelector(".order-product").value);
+          if (!productId) throw new Error("Har existing row mein design select karo.");
+          const key = "id:" + productId;
+          if (seenDesigns.has(key)) throw new Error("Same design ko ek hi row mein rakho.");
+          seenDesigns.add(key);
+          rowsToSave.push({ row, isNew, productId, sets, ratePerSet });
+        }
+      }
+
+      saveOrderButton.disabled = true;
+      for (const entry of rowsToSave) {
+        let productId = entry.productId;
+        if (entry.isNew) {
+          const key = JSON.stringify([entry.designNumber, entry.name, entry.category, entry.sizeStart, entry.sizeEnd]);
+          if (entry.row.dataset.createdDesignKey === key && entry.row.dataset.createdProductId) {
+            productId = Number(entry.row.dataset.createdProductId);
+          } else {
+            orderMessage.textContent = `New design ${entry.designNumber} save ho raha hai...`;
+            const designResponse = await fetch("/api/order-designs", {
+              method: "POST", headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ designNumber: entry.designNumber, name: entry.name,
+                category: entry.category, sizeStart: entry.sizeStart, sizeEnd: entry.sizeEnd })
+            });
+            const created = await readJson(designResponse);
+            productId = Number(created.id);
+            entry.row.dataset.createdDesignKey = key;
+            entry.row.dataset.createdProductId = String(productId);
+          }
+        }
+        items.push({ productId, sets: entry.sets, ratePerSet: entry.ratePerSet });
+      }
+
+      if (!items.length) throw new Error("Kam se kam ek design add karo.");
+
+      saveOrderButton.disabled = true;
+      orderMessage.textContent = "Order save ho raha hai...";
+
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          partyId: Number(partySelect.value),
+          items,
+          notes: document.getElementById("orderNotes").value.trim() || null
+        })
+      });
+
+      const result = await readJson(response);
+      const savedOrderId = result.order_id ?? result.id ?? "saved";
+      const made = Array.isArray(result.factoryRequirementsCreated)
+        ? result.factoryRequirementsCreated
+        : [];
+      const warnings = Array.isArray(result.factoryWarnings) ? result.factoryWarnings : [];
+      const factoryText = made.length
+        ? ` Factory requirement auto-created: ${made.map(item => `${item.setsOrdered} sets`).join(", ")}.`
+        : " Is order se abhi extra factory sets ki zaroorat nahi nikli.";
+      orderMessage.textContent =
+        `Order #${savedOrderId} save ho gaya. Total: ${money(result.total_amount)}. Stock deduct nahi hua.` +
+        factoryText +
+        (warnings.length ? ` Warning: ${warnings.join(" ")}` : "");
+
+      orderForm.reset();
+      partySelect.value = "";
+      partySearch.value = "";
+      itemsContainer.replaceChildren();
+      addOrderItemRow();
+      await loadOrders();
+      // Refresh the catalogue immediately so newly-created designs appear at once.
+      await loadProducts();
+      // Notify the separate inventory dashboard to refresh its tables.
+      window.dispatchEvent(new Event("shop-order-saved"));
+    } catch (error) {
+      orderMessage.textContent = (error.message || "Order save nahi hua.") + " Agar new design create ho gaya tha, retry par wahi design reuse hoga. Catalogue check karo.";
+    } finally {
+      saveOrderButton.disabled = false;
+    }
+  });
+
+  loadOrderChoices();
+  loadOrders();
+})();
+</script>
+
+
+<script>
+(() => {
+  const inventoryMessage = document.getElementById("inventoryMessage");
+  const boysTable = document.getElementById("boysInventoryTable");
+  const girlsTable = document.getElementById("girlsInventoryTable");
+  const factoryOrdersTable = document.getElementById("factoryOrdersTable");
+  const orderSelect = document.getElementById("factoryOrderSelect");
+  const itemSelect = document.getElementById("factoryItemSelect");
+  const stockDisplay = document.getElementById("factoryStockDisplay");
+  const quantityInput = document.getElementById("factoryNeededSets");
+  const factoryForm = document.getElementById("factoryOrderForm");
+  const factoryMessage = document.getElementById("factoryOrderMessage");
+  const saveFactoryButton = document.getElementById("saveFactoryOrderButton");
+
+  let products = [];
+  let orders = [];
+  let factoryOrders = [];
+
+  const safe = value => String(value ?? "");
+  const esc = value => safe(value).replace(/[&<>"']/g, ch => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  })[ch]);
+
+  async function jsonRequest(response) {
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(body.error || body.message || "Request failed.");
+    return body;
+  }
+
+  function setEmpty(table, columns, message) {
+    table.innerHTML = `<tr><td class="empty" colspan="${columns}">${esc(message)}</td></tr>`;
+  }
+
+  async function loadInventorySummary() {
+    const data = await jsonRequest(await fetch("/api/inventory/summary"));
+    renderInventoryTable(boysTable, data.boysWear || []);
+    renderInventoryTable(girlsTable, data.girlsWear || []);
+  }
+
+  function renderInventoryTable(table, rows) {
+    if (!rows.length) {
+      setEmpty(table, 6, "Is section mein abhi koi design nahi hai.");
+      return;
+    }
+    table.innerHTML = rows.map(p => `<tr>
+      <td>${esc(p.design_number)}</td>
+      <td>${esc(p.name)}</td>
+      <td>${Number(p.stockSets || 0)}</td>
+      <td>${Number(p.factoryOrderedSets || 0)}</td>
+      <td>${Number(p.factoryReceivedSets || 0)}</td>
+      <td>${Number(p.factoryPendingSets || 0)}</td>
+    </tr>`).join("");
+  }
+
+  async function loadFactoryOrders() {
+    factoryOrders = await jsonRequest(await fetch("/api/factory-orders"));
+    if (!factoryOrders.length) {
+      setEmpty(factoryOrdersTable, 8, "Abhi factory order nahi banaya gaya.");
+      return;
+    }
+
+    factoryOrdersTable.innerHTML = factoryOrders.map(row => {
+      const product = row.product || row.products || {};
+      const pending = Number(row.sets_pending ?? (Number(row.sets_ordered) - Number(row.sets_received)));
+      return `<tr>
+        <td>#${Number(row.id)}</td>
+        <td>${esc(product.design_number || ("Product #" + row.product_id))} — ${esc(product.name || "")}</td>
+        <td>${esc(product.category || "—")}</td>
+        <td>${Number(row.sets_ordered)}</td>
+        <td>${Number(row.sets_received)}</td>
+        <td>${pending}</td>
+        <td>${pending > 0 ? `<input aria-label="Receive quantity for factory order ${Number(row.id)}" type="number" min="1" max="${pending}" step="1" class="receive-quantity" data-id="${Number(row.id)}" value="${pending}" style="min-width:100px">` : "Complete"}</td>
+        <td>${pending > 0 ? `<button type="button" class="receive-factory-button" data-id="${Number(row.id)}">Receive</button>` : "—"}</td>
+      </tr>`;
+    }).join("");
+  }
+
+  async function loadChoices() {
+    const [productData, orderData] = await Promise.all([
+      jsonRequest(await fetch("/api/products")),
+      jsonRequest(await fetch("/api/orders"))
+    ]);
+    products = productData;
+    orders = orderData;
+
+    orderSelect.replaceChildren(new Option("Select customer order", ""));
+    orders.forEach(order => {
+      const party = order.parties?.name || ("Party #" + order.party_id);
+      const opt = new Option(`#${order.id} — ${party} — ${order.status || ""}`, String(order.id));
+      orderSelect.appendChild(opt);
+    });
+    updateOrderItems();
+  }
+
+  function updateOrderItems() {
+    const order = orders.find(o => String(o.id) === orderSelect.value);
+    itemSelect.replaceChildren(new Option("Select design", ""));
+    if (!order) {
+      stockDisplay.value = "0";
+      quantityInput.value = "1";
+      return;
+    }
+    const items = Array.isArray(order.order_items) ? order.order_items : [];
+    items.forEach(item => {
+      const product = item.products || {};
+      const label = `${product.design_number || "Design"} — ${product.name || ""} — ${item.sets} sets`;
+      const option = new Option(label, String(item.id));
+      option.dataset.productId = String(item.product_id);
+      option.dataset.orderSets = String(item.sets);
+      itemSelect.appendChild(option);
+    });
+    updateSuggestedQuantity();
+  }
+
+  function updateSuggestedQuantity() {
+    const order = orders.find(o => String(o.id) === orderSelect.value);
+    const item = order?.order_items?.find(i => String(i.id) === itemSelect.value);
+    if (!item) {
+      stockDisplay.value = "0";
+      quantityInput.value = "1";
+      return;
+    }
+    const product = products.find(p => String(p.id) === String(item.product_id));
+    const stock = Number(product?.stockSets || 0);
+    const requested = Number(item.sets || 0);
+    const alreadyPendingForProduct = factoryOrders
+      .filter(row => String(row.product_id) === String(item.product_id))
+      .reduce((sum, row) => sum + Math.max(0, Number(row.sets_ordered || 0) - Number(row.sets_received || 0)), 0);
+    stockDisplay.value = String(stock);
+    quantityInput.value = String(Math.max(1, requested - stock - alreadyPendingForProduct));
+  }
+
+  orderSelect.addEventListener("change", updateOrderItems);
+  itemSelect.addEventListener("change", updateSuggestedQuantity);
+
+  factoryForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    factoryMessage.textContent = "";
+    const order = orders.find(o => String(o.id) === orderSelect.value);
+    const item = order?.order_items?.find(i => String(i.id) === itemSelect.value);
+    const quantity = Number(quantityInput.value);
+
+    if (!order || !item) {
+      factoryMessage.textContent = "Customer order aur design select karo.";
+      return;
+    }
+    if (!Number.isSafeInteger(quantity) || quantity < 1) {
+      factoryMessage.textContent = "Factory quantity 1 ya usse zyada whole sets honi chahiye.";
+      return;
+    }
+
+    saveFactoryButton.disabled = true;
+    try {
+      const result = await jsonRequest(await fetch("/api/factory-orders", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({
+          productId: item.product_id,
+          orderId: order.id,
+          orderItemId: item.id,
+          setsOrdered: quantity,
+          notes: document.getElementById("factoryOrderNotes").value
+        })
+      }));
+      factoryMessage.textContent = `Factory order #${result.id} save ho gaya. Pending: ${result.sets_pending} sets.`;
+      document.getElementById("factoryOrderNotes").value = "";
+      await refreshAll();
+    } catch (error) {
+      factoryMessage.textContent = "Factory order save nahi hua: " + error.message;
+    } finally {
+      saveFactoryButton.disabled = false;
+    }
+  });
+
+  factoryOrdersTable.addEventListener("click", async event => {
+    const button = event.target.closest(".receive-factory-button");
+    if (!button) return;
+    const id = Number(button.dataset.id);
+    const input = factoryOrdersTable.querySelector(`.receive-quantity[data-id="${id}"]`);
+    const quantity = Number(input?.value);
+    if (!Number.isSafeInteger(quantity) || quantity < 1) {
+      inventoryMessage.textContent = "Receive quantity valid whole sets mein enter karo.";
+      return;
+    }
+    button.disabled = true;
+    inventoryMessage.textContent = "";
+    try {
+      const result = await jsonRequest(await fetch(`/api/factory-orders/${id}/receive`, {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({setsReceived: quantity})
+      }));
+      inventoryMessage.textContent = `Receive success: ${result.sets_received_now} sets aaye. Ab stock ${result.stock_sets_now} sets hai; factory pending ${result.sets_pending} sets.`;
+      await refreshAll();
+    } catch (error) {
+      inventoryMessage.textContent = "Receiving fail hui: " + error.message;
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  async function refreshAll() {
+    try {
+      inventoryMessage.textContent = "Inventory refresh ho rahi hai...";
+      await loadInventorySummary();
+      await loadFactoryOrders();
+      await loadChoices();
+      updateSuggestedQuantity();
+      inventoryMessage.textContent = "Inventory updated.";
+    } catch (error) {
+      inventoryMessage.textContent = "Inventory load nahi hui: " + error.message;
+    }
+  }
+
+  document.getElementById("refreshInventoryButton").addEventListener("click", refreshAll);
+  // Keep inventory and factory requirement tables in sync after order booking.
+  window.addEventListener("shop-order-saved", refreshAll);
+  refreshAll();
+})();
+</script>
+
+
+<script>
+(() => {
+  const body = document.getElementById("cancellationHistoryTable");
+  const refresh = document.getElementById("refreshCancellationHistory");
+  if (!body || !refresh) return;
+  async function loadCancellationHistory() {
+    body.replaceChildren();
+    try {
+      const response = await fetch("/api/order-cancellations");
+      const rows = await response.json().catch(() => []);
+      if (!response.ok) throw new Error(rows.error || "Cancellation history load nahi hui.");
+      if (!rows.length) {
+        const tr = body.insertRow(); const td = tr.insertCell();
+        td.colSpan = 9; td.className = "empty"; td.textContent = "Abhi koi cancellation record nahi hai.";
+        return;
+      }
+      rows.forEach(row => {
+        const tr = body.insertRow();
+        const date = row.cancelled_at ? new Date(row.cancelled_at).toLocaleString() : "—";
+        [date, "#" + row.order_id, row.partyName || "—", row.designNumber || "—", row.sets_cancelled, Number(row.cancelled_dispatched_sets || 0) > 0 ? "Yes" : "No", row.returned_to_stock ? "Yes" : "No", row.reason || "—", row.notes || "—"]
+          .forEach(value => tr.insertCell().textContent = String(value));
+      });
+    } catch (error) {
+      const tr = body.insertRow(); const td = tr.insertCell();
+      td.colSpan = 7; td.className = "empty"; td.textContent = error.message;
+    }
+  }
+  refresh.addEventListener("click", loadCancellationHistory);
+  window.addEventListener("shop-order-saved", loadCancellationHistory);
+  loadCancellationHistory();
+})();
+</script>
+
+<section class="panel" id="party-ledger-panel" style="max-width:1200px;margin:25px auto;padding:22px;background:#fff;border-radius:12px;box-shadow:0 3px 12px #1720330d;">
+  <h2>Party Payments & Ledger</h2>
+  <p class="muted">Customer se payment receive karne par yahan entry karo. Balance = Opening Balance + Orders − Payments. Positive balance ka matlab customer se amount lena baaki hai.</p>
+  <h3>Record Customer Payment</h3>
+  <form id="paymentForm">
+    <div class="grid">
+      <div><label for="paymentParty">Party *</label><select id="paymentParty" required><option value="">Loading parties...</option></select></div>
+      <div><label for="paymentAmount">Amount (₹) *</label><input id="paymentAmount" type="number" min="0.01" step="0.01" required placeholder="e.g. 5000"></div>
+      <div><label for="paymentDate">Payment Date *</label><input id="paymentDate" type="date" required></div>
+      <div><label for="paymentMode">Payment Mode *</label><select id="paymentMode" required><option>Cash</option><option>UPI</option><option>Bank Transfer</option><option>Cheque</option><option>Other</option></select></div>
+      <div><label for="paymentReference">Reference (optional)</label><input id="paymentReference" placeholder="UPI ID / cheque number"></div>
+      <div><label for="paymentNotes">Notes (optional)</label><input id="paymentNotes" placeholder="Payment note"></div>
+    </div>
+    <button id="savePaymentButton" type="submit">Save Payment</button>
+    <p id="paymentMessage" class="message" role="status"></p>
+  </form>
+  <h3>Party Balances</h3>
+  <button type="button" id="refreshLedgerButton" style="max-width:220px;">Refresh Ledger</button>
+  <div class="table-wrap"><table><thead><tr><th>Party</th><th>Opening Balance</th><th>Order Total</th><th>Payments Received</th><th>Balance Due</th></tr></thead><tbody id="partyLedgerTable"><tr><td colspan="5" class="empty">Loading ledger...</td></tr></tbody></table></div>
+  <h3>Recent Payments</h3>
+  <div class="table-wrap"><table><thead><tr><th>Date</th><th>Party</th><th>Amount</th><th>Mode</th><th>Reference</th><th>Notes</th></tr></thead><tbody id="paymentsTable"><tr><td colspan="6" class="empty">Loading payments...</td></tr></tbody></table></div>
+</section>
+<script>
+(() => {
+  const form = document.getElementById('paymentForm');
+  if (!form) return;
+  const partySelect = document.getElementById('paymentParty');
+  const message = document.getElementById('paymentMessage');
+  const ledgerBody = document.getElementById('partyLedgerTable');
+  const paymentsBody = document.getElementById('paymentsTable');
+  const saveButton = document.getElementById('savePaymentButton');
+  const today = new Date();
+  document.getElementById('paymentDate').value = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  const money = n => '₹' + Number(n || 0).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+  async function json(response) { const data = await response.json().catch(()=>({})); if (!response.ok) throw new Error(data.error || 'Request failed'); return data; }
+  async function loadPartiesForPayments() {
+    const parties = await json(await fetch('/api/parties'));
+    partySelect.replaceChildren();
+    const placeholder = document.createElement('option'); placeholder.value=''; placeholder.textContent='Select party'; partySelect.appendChild(placeholder);
+    parties.forEach(p => { const o=document.createElement('option'); o.value=String(p.id); o.textContent=`${p.name}${p.phone ? ' — '+p.phone : ''}`; partySelect.appendChild(o); });
+  }
+  async function loadLedger() {
+    try {
+      const data = await json(await fetch('/api/party-ledger'));
+      ledgerBody.replaceChildren();
+      if (!data.ledger.length) { const tr=ledgerBody.insertRow(); const td=tr.insertCell(); td.colSpan=5; td.className='empty'; td.textContent='Abhi koi party nahi hai.'; }
+      data.ledger.forEach(p => { const tr=ledgerBody.insertRow(); [p.name, money(p.openingBalance), money(p.ordersTotal), money(p.paymentsTotal), money(p.balance)].forEach((v,i)=>{const td=tr.insertCell(); td.textContent=String(v); if(i===4) td.style.fontWeight='bold';}); });
+      paymentsBody.replaceChildren();
+      if (!data.payments.length) { const tr=paymentsBody.insertRow(); const td=tr.insertCell(); td.colSpan=6; td.className='empty'; td.textContent='Abhi payment entry nahi hai.'; }
+      data.payments.forEach(p => { const tr=paymentsBody.insertRow(); [p.payment_date || '—', p.party?.name || ('Party #'+p.party_id), money(p.amount), p.payment_mode || '—', p.reference || '—', p.notes || '—'].forEach(v=>tr.insertCell().textContent=String(v)); });
+    } catch (error) { ledgerBody.replaceChildren(); const tr=ledgerBody.insertRow(); const td=tr.insertCell(); td.colSpan=5; td.className='empty'; td.textContent=error.message; message.textContent=error.message; }
+  }
+  form.addEventListener('submit', async event => {
+    event.preventDefault(); if (saveButton.disabled) return;
+    saveButton.disabled=true; message.textContent='Payment save ho rahi hai...';
+    try {
+      const payload = { partyId: partySelect.value, amount: Number(document.getElementById('paymentAmount').value), paymentDate: document.getElementById('paymentDate').value, paymentMode: document.getElementById('paymentMode').value, reference: document.getElementById('paymentReference').value, notes: document.getElementById('paymentNotes').value };
+      await json(await fetch('/api/payments', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)}));
+      message.textContent='Payment successfully save ho gayi.';
+      const keepParty=partySelect.value; form.reset(); partySelect.value=keepParty;
+      const d=new Date(); document.getElementById('paymentDate').value=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      await loadLedger();
+    } catch (error) { message.textContent='Payment save nahi hui: '+error.message; }
+    finally { saveButton.disabled=false; }
+  });
+  document.getElementById('refreshLedgerButton').addEventListener('click', loadLedger);
+  loadPartiesForPayments().catch(e=>message.textContent='Party list load nahi hui: '+e.message);
+  loadLedger();
+})();
+</script>
+
+  <script>
+  (() => {
+    const main = document.querySelector('main');
+    if (!main) return;
+    const pages = {
+      dashboard: { title: 'Business Dashboard', subtitle: 'A quick overview of stock, orders, collections and pending work.' },
+      orders: { title: 'Orders & Dispatch', subtitle: 'Book customer orders, dispatch designs partially, and manage cancellations.' },
+      inventory: { title: 'Inventory & Factory', subtitle: 'Manage designs, available sets, factory requirements and receiving.' },
+      parties: { title: 'Parties & Ledger', subtitle: 'Maintain customer details, record collections and review outstanding balances.' },
+      reports: { title: 'Reports & History', subtitle: 'Review cancellation records and follow business activity.' }
+    };
+    Object.entries(pages).forEach(([key, meta]) => {
+      const view = document.createElement('div'); view.className = 'page-view' + (key === 'dashboard' ? ' active' : ''); view.id = 'page-' + key; view.dataset.pageView = key;
+      const heading = document.createElement('div'); heading.className = 'page-heading';
+      const text = document.createElement('div'); const h = document.createElement('h2'); h.textContent = meta.title; const p = document.createElement('p'); p.textContent = meta.subtitle; text.append(h,p); heading.append(text); view.append(heading); main.append(view);
+    });
+    const dashboard = document.getElementById('page-dashboard');
+    dashboard.insertAdjacentHTML('beforeend', `
+      <div class="dashboard-grid">
+        <article class="metric-card"><div class="metric-top"><span>Designs in Catalogue</span><span class="metric-icon">▣</span></div><div class="metric-value" id="dashDesigns">—</div><div class="metric-note">Unique garment designs</div></article>
+        <article class="metric-card"><div class="metric-top"><span>Available Stock</span><span class="metric-icon">▤</span></div><div class="metric-value" id="dashStock">—</div><div class="metric-note">Complete sets at shop</div></article>
+        <article class="metric-card"><div class="metric-top"><span>Open Orders</span><span class="metric-icon">↗</span></div><div class="metric-value" id="dashOpenOrders">—</div><div class="metric-note">Orders with work remaining</div></article>
+        <article class="metric-card"><div class="metric-top"><span>Factory Pending</span><span class="metric-icon">⚙</span></div><div class="metric-value" id="dashFactoryPending">—</div><div class="metric-note">Sets not yet received</div></article>
+        <article class="metric-card"><div class="metric-top"><span>Order Value</span><span class="metric-icon">₹</span></div><div class="metric-value" id="dashSales">—</div><div class="metric-note">Saved order totals</div></article>
+        <article class="metric-card"><div class="metric-top"><span>Payments Received</span><span class="metric-icon">✓</span></div><div class="metric-value" id="dashPayments">—</div><div class="metric-note">Recorded customer payments</div></article>
+        <article class="metric-card"><div class="metric-top"><span>Balance Due</span><span class="metric-icon">◷</span></div><div class="metric-value" id="dashDue">—</div><div class="metric-note">Customer balances outstanding</div></article>
+        <article class="metric-card"><div class="metric-top"><span>Sets Dispatched</span><span class="metric-icon">➜</span></div><div class="metric-value" id="dashDispatched">—</div><div class="metric-note">Across saved order items</div></article>
+      </div>
+      <div id="dashboardError" class="dashboard-error" role="status"></div>
+      <div class="dashboard-columns">
+        <section class="dash-card"><h3>Quick actions</h3><p>Jump straight to the task you want to complete.</p><div class="quick-actions">
+          <button type="button" class="quick-action" data-go="orders"><strong>＋ Book customer order</strong><span>Create an order for existing or new designs</span></button>
+          <button type="button" class="quick-action" data-go="inventory"><strong>＋ Add new design</strong><span>Add product, size range and starting stock</span></button>
+          <button type="button" class="quick-action" data-go="inventory"><strong>⚙ Factory receiving</strong><span>Record incoming complete sets</span></button>
+          <button type="button" class="quick-action" data-go="parties"><strong>₹ Record payment</strong><span>Update customer collection ledger</span></button>
+        </div></section>
+        <section class="dash-card"><h3>Business snapshot</h3><p>Live totals from your current records.</p><div class="dash-list" id="dashboardSnapshot"><div class="dash-list-row"><span>Loading dashboard data…</span><strong>—</strong></div></div><button type="button" id="refreshDashboard" style="max-width:190px">↻ Refresh overview</button></section>
+      </div>`);
+
+    const sectionNodes = [...document.querySelectorAll('body section')].filter(el => !el.closest('.page-view'));
+    const titleOf = el => (el.querySelector(':scope > h2')?.textContent || '').trim().toLowerCase();
+    const groups = {
+      'add new design':'inventory', 'product catalogue':'inventory', 'factory & inventory dashboard':'inventory',
+      'order booking':'orders', 'saved orders':'orders',
+      'party management':'parties', 'party payments & ledger':'parties',
+      'order cancellation history':'reports'
+    };
+    sectionNodes.forEach(section => {
+      const title = titleOf(section); const pageKey = groups[title] || 'reports';
+      const view = document.getElementById('page-' + pageKey);
+      if (view) view.appendChild(section);
+    });
+    // Put a helpful empty-state heading above each existing section while preserving all original IDs and scripts.
+    const navButtons = [...document.querySelectorAll('.nav-link[data-page]')];
+    function showPage(key) {
+      if (!pages[key]) return;
+      document.querySelectorAll('[data-page-view]').forEach(el => el.classList.toggle('active', el.dataset.pageView === key));
+      navButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.page === key));
+      try { history.replaceState(null, '', '#' + key); } catch (_) {}
+      if (key === 'dashboard') loadDashboard();
+    }
+    navButtons.forEach(btn => btn.addEventListener('click', () => showPage(btn.dataset.page)));
+    document.querySelectorAll('[data-go]').forEach(btn => btn.addEventListener('click', () => showPage(btn.dataset.go)));
+    const hashKey = location.hash.replace('#','');
+    if (pages[hashKey]) showPage(hashKey); else showPage('dashboard');
+
+    const money = n => '₹' + Number(n || 0).toLocaleString('en-IN', {maximumFractionDigits:0});
+    async function getJson(url) { const r = await fetch(url); const d = await r.json().catch(() => ({})); if (!r.ok) throw new Error(d.error || d.message || url + ' failed'); return d; }
+    async function loadDashboard() {
+      const err = document.getElementById('dashboardError'); const snap = document.getElementById('dashboardSnapshot');
+      if (loadDashboard.busy) return; loadDashboard.busy = true; err.textContent = '';
+      try {
+        const [products, orders, inventory, ledger, cancellations] = await Promise.all([
+          getJson('/api/products'), getJson('/api/orders'), getJson('/api/inventory/summary'), getJson('/api/party-ledger'), getJson('/api/order-cancellations')
+        ]);
+        const stock = products.reduce((sum,p) => sum + Number(p.stockSets || 0),0);
+        const factoryItems = [...(inventory.boysWear || []), ...(inventory.girlsWear || [])];
+        const factoryPending = factoryItems.reduce((sum,p) => sum + Number(p.factoryPendingSets || 0),0);
+        const openOrders = orders.filter(o => (o.order_items || []).some(i => Number(i.pendingSets || 0) > 0)).length;
+        const orderValue = orders.filter(o => o.status !== 'cancelled').reduce((sum,o) => sum + Number(o.total_amount || 0),0);
+        const payments = (ledger.payments || []).reduce((sum,p) => sum + Number(p.amount || 0),0);
+        const due = (ledger.ledger || []).reduce((sum,p) => sum + Number(p.balance || 0),0);
+        const dispatched = orders.reduce((sum,o) => sum + (o.order_items || []).reduce((a,i) => a + Number(i.dispatchedSets || 0),0),0);
+        const values = {dashDesigns:products.length,dashStock:stock,dashOpenOrders:openOrders,dashFactoryPending:factoryPending,dashSales:money(orderValue),dashPayments:money(payments),dashDue:money(due),dashDispatched:dispatched};
+        Object.entries(values).forEach(([id,value]) => { const el=document.getElementById(id); if(el) el.textContent=String(value); });
+        const cancelledSets = cancellations.reduce((sum,c) => sum + Number(c.sets_cancelled || 0),0);
+        const boys = (inventory.boysWear || []).reduce((sum,p) => sum + Number(p.stockSets || 0),0);
+        const girls = (inventory.girlsWear || []).reduce((sum,p) => sum + Number(p.stockSets || 0),0);
+        const rows = [
+          ['Boys Wear stock', boys + ' sets'], ['Girls Wear stock', girls + ' sets'], ['Customer accounts', (ledger.ledger || []).length],
+          ['Cancellation records', cancellations.length], ['Sets cancelled (recorded)', cancelledSets], ['Factory designs tracked', factoryItems.length]
+        ];
+        snap.replaceChildren(); rows.forEach(([label,value]) => { const row=document.createElement('div'); row.className='dash-list-row'; const l=document.createElement('span'); l.textContent=label; const v=document.createElement('strong'); v.textContent=String(value); row.append(l,v); snap.append(row); });
+      } catch (e) { err.textContent = 'Dashboard data load nahi hua: ' + e.message + '. Baaki sections ko separately use kar sakte ho.'; }
+      finally { loadDashboard.busy = false; }
+    }
+    document.getElementById('refreshDashboard').addEventListener('click', loadDashboard);
+    window.addEventListener('shop-order-saved', loadDashboard);
+    window.addEventListener('shop-dispatch-saved', loadDashboard);
+    window.addEventListener('shop-cancellation-saved', loadDashboard);
+    window.addEventListener('shop-payment-saved', loadDashboard);
+    loadDashboard();
+  })();
+  </script>
+</div></div>
+
+<script>
+(() => {
+  const $ = (s, root=document) => root.querySelector(s);
+  const make = (tag, attrs={}, text='') => {
+    const el = document.createElement(tag);
+    Object.entries(attrs).forEach(([k,v]) => {
+      if (k === 'className') el.className = v;
+      else if (k === 'html') el.innerHTML = v;
+      else el.setAttribute(k, v);
+    });
+    if (text) el.textContent = text;
+    return el;
+  };
+
+  function addToolbar(section, config) {
+    if (!section || section.querySelector('.toolbar-filters')) return;
+    const table = $(config.table, section);
+    if (!table) return;
+    const toolbar = make('div', {className:'toolbar-filters'});
+    const searchWrap = make('div', {className:'search-field'});
+    searchWrap.append(make('label',{for:config.prefix+'Search'},config.searchLabel || 'Search'));
+    const search = make('input',{id:config.prefix+'Search',type:'search',placeholder:config.placeholder || 'Search records...','aria-label':'Search records'});
+    searchWrap.append(search);
+    toolbar.append(searchWrap);
+
+    let from = null, to = null;
+    if (config.dateFilter) {
+      const fromWrap = make('div');
+      fromWrap.append(make('label',{for:config.prefix+'From'},'From date'));
+      from = make('input',{id:config.prefix+'From',type:'date'});
+      fromWrap.append(from); toolbar.append(fromWrap);
+      const toWrap = make('div');
+      toWrap.append(make('label',{for:config.prefix+'To'},'To date'));
+      to = make('input',{id:config.prefix+'To',type:'date'});
+      toWrap.append(to); toolbar.append(toWrap);
+    }
+
+    const actions = make('div',{className:'filter-actions'});
+    const clear = make('button',{type:'button',className:'secondary-button'},'Clear filters');
+    clear.addEventListener('click', () => {
+      search.value = '';
+      if (from) from.value = '';
+      if (to) to.value = '';
+      apply();
+    });
+    const print = make('button',{type:'button'},'Print report');
+    print.addEventListener('click', () => {
+      const heading = section.querySelector(':scope > h2')?.textContent || 'Shop AI Report';
+      const stamp = new Date().toLocaleString('en-IN');
+      const title = make('div',{className:'print-only'});
+      title.append(make('h2',{},heading),make('p',{},'Jai Shree Mahakal Garments · Printed '+stamp));
+      section.insertBefore(title, section.firstChild);
+      document.body.dataset.printSection = config.prefix;
+      window.print();
+      delete document.body.dataset.printSection;
+      title.remove();
+    });
+    actions.append(clear,print); toolbar.append(actions);
+    section.insertBefore(toolbar, table.closest('.table-wrap') || table);
+    const note = make('p',{className:'toolbar-note'},'Search narrows the visible rows. Date filters apply to the record date where available.');
+    toolbar.after(note);
+
+    function rowDate(row) {
+      if (!config.dateFilter) return '';
+      const cell = row.cells[config.dateColumn ?? 1];
+      if (!cell) return '';
+      const raw = cell.textContent.trim();
+      const parsed = new Date(raw);
+      if (!Number.isNaN(parsed.getTime())) return parsed.toISOString().slice(0,10);
+      // Support dates rendered in the browser's locale (e.g. 20/10/2026).
+      const match = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if (match) return `${match[3]}-${match[2].padStart(2,'0')}-${match[1].padStart(2,'0')}`;
+      return '';
+    }
+    function apply() {
+      const term = search.value.trim().toLowerCase();
+      const fromDate = from?.value || '';
+      const toDate = to?.value || '';
+      [...table.tBodies].forEach(tbody => {
+        [...tbody.rows].forEach(row => {
+          if (row.classList.contains('empty') || row.cells.length <= 1) {
+            row.hidden = false; return;
+          }
+          const text = row.textContent.toLowerCase();
+          let visible = !term || text.includes(term);
+          if (visible && config.dateFilter && (fromDate || toDate)) {
+            const date = rowDate(row);
+            if (!date) visible = false;
+            if (visible && fromDate && date < fromDate) visible = false;
+            if (visible && toDate && date > toDate) visible = false;
+          }
+          row.hidden = !visible;
+        });
+      });
+    }
+    search.addEventListener('input',apply);
+    if (from) from.addEventListener('change',apply);
+    if (to) to.addEventListener('change',apply);
+    // Reapply filters after the app refreshes table contents.
+    const observer = new MutationObserver(() => apply());
+    observer.observe(table,{childList:true,subtree:true});
+  }
+
+  function setup() {
+    const orderSection = $('#ordersTable')?.closest('section');
+    addToolbar(orderSection,{prefix:'ordersFilter',table:'#ordersTable',searchLabel:'Search orders',placeholder:'Order ID, party, design, status...',dateFilter:true,dateColumn:1});
+    const productSection = $('#products')?.closest('section');
+    addToolbar(productSection,{prefix:'productsFilter',table:'#products',searchLabel:'Search catalogue',placeholder:'Design number, product, category...'});
+    const cancellationSection = $('#cancellationHistoryTable')?.closest('section');
+    addToolbar(cancellationSection,{prefix:'cancelFilter',table:'#cancellationHistoryTable',searchLabel:'Search cancellations',placeholder:'Party, design, reason...',dateFilter:true,dateColumn:0});
+    const factorySection = $('#factoryOrdersTable')?.closest('section');
+    addToolbar(factorySection,{prefix:'factoryFilter',table:'#factoryOrdersTable',searchLabel:'Search factory orders',placeholder:'Design, section, factory ID...'});
+    const partySection = $('#partyList')?.closest('section');
+    if (partySection && !partySection.querySelector('.print-ledger-button')) {
+      const button = make('button',{type:'button',className:'print-ledger-button'},'Print party list');
+      button.addEventListener('click',()=>window.print());
+      partySection.insertBefore(button, $('#partyList'));
+    }
+  }
+
+  // Existing sections are moved into their navigation pages by the app's script.
+  // Run once after DOM parsing and again after a short delay to attach filters reliably.
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',setup,{once:true});
+  else setup();
+  window.addEventListener('load',setup,{once:true});
+})();
+</script>
+
+</body>
+</html>
